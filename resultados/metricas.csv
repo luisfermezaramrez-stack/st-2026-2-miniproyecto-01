@@ -1,0 +1,5 @@
+modelo,decision,RMSE,MAE,MAPE
+estacional ingenuo,Sin huecos (interpolación lineal de respaldo); atípicos estacionales de diciembre conservados,7.33,5.8,4.41
+"SARIMAX(1, 1, 1)(1, 1, 1, 12) + exógenas",Sin huecos (interpolación lineal de respaldo); atípicos estacionales de diciembre conservados,9.47,8.58,6.56
+"SARIMA(1, 1, 1)(1, 1, 1, 12)",Sin huecos (interpolación lineal de respaldo); atípicos estacionales de diciembre conservados,9.58,8.7,6.65
+ingenuo,Sin huecos (interpolación lineal de respaldo); atípicos estacionales de diciembre conservados,15.57,11.62,8.52
