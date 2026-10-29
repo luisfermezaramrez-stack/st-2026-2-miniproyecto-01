@@ -1,22 +1,14 @@
 # datos
 
-La serie del grupo va en esta carpeta, en CSV. Llene esta ficha y borre la
-serie de ejemplo cuando ya no la use.
+La serie va en esta carpeta, en CSV.
 
 | Campo | Valor |
 |---|---|
-| Archivo | {{nombre del CSV}} |
-| Qué mide | {{...}} |
-| Fuente | {{institución o conjunto de datos, con enlace}} |
-| Licencia | {{...}} |
+| Archivo | `comercio_minorista_colombia.csv` |
+| Qué mide | Índice de volumen del comercio minorista de Colombia, base 2015=100, sin desestacionalizar |
+| Fuente | OCDE (Main Economic Indicators) vía FRED — https://fred.stlouisfed.org/series/COLSLRTTO01IXOBM |
+| Licencia | Datos públicos de FRED, de uso libre con cita a la fuente |
 | Frecuencia | mensual |
-| Periodo | {{primer mes}} a {{último mes}} ({{n}} observaciones) |
-| Columna de fecha | {{...}} |
-| Columna que se pronostica | {{...}} |
-
-## Serie de ejemplo
-
-`air_passengers.csv`: pasajeros mensuales de una aerolínea entre 1949 y 1960,
-la serie clásica de Box y Jenkins, tomada de Kaggle
-(`rakannimer/air-passengers`). Solo sirve para comprobar que el guion corre;
-el miniproyecto se hace con la serie del grupo.
+| Periodo | 2013-01 a 2024-03 (135 observaciones) |
+| Columna de fecha | `observation_date` |
+| Columna que se pronostica | `COLSLRTTO01IXOBM` |

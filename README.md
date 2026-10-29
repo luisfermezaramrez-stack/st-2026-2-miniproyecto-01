@@ -29,9 +29,8 @@ entrega pierde el 20 %; quien no aparezca aquí no cuenta como parte del grupo.
 
 | Nombre completo | Código | Correo institucional |
 |---|---|---|
-| | | |
-| | | |
-| | | |
+|LUIS FERNANDO MEZA RAMIREZ | 22505520 | luis_fer.mezaramrez@uao.edu.co |
+
 
 ## Entrega
 
