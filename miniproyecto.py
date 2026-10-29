@@ -20,6 +20,12 @@ import pandas as pd  # noqa: E402
 
 from comun import (RAIZ, backtest, cargar_serie, estacional_ingenuo,  # noqa: E402
                    fechas_siguientes, ingenuo)
+import itertools  # noqa: E402
+from statsmodels.graphics.tsaplots import plot_acf, plot_pacf  # noqa: E402
+from statsmodels.stats.diagnostic import acorr_ljungbox  # noqa: E402
+from statsmodels.tsa.arima.model import ARIMA  # noqa: E402
+from statsmodels.tsa.seasonal import STL  # noqa: E402
+from statsmodels.tsa.stattools import adfuller  # noqa: E402
 
 warnings.filterwarnings("ignore")
 FIGURAS = RAIZ / "figuras"
@@ -70,8 +76,31 @@ def graficar_serie(serie):
 # ============================================================
 
 def descomponer(serie):
-    """TODO: STL robusta con el periodo de la serie; guarde figuras/stl.png."""
-    raise NotImplementedError("descomposición STL")
+    """STL robusta con el periodo de la serie; guarda figuras/stl.png."""
+    stl = STL(serie, period=PERIODO, robust=True).fit()
+    figura, ejes = plt.subplots(4, 1, figsize=(9, 8), sharex=True)
+    ejes[0].plot(serie.index, serie.to_numpy())
+    ejes[0].set_title(f"{VALOR}: serie observada")
+    ejes[1].plot(stl.trend.index, stl.trend.to_numpy(), color="tab:orange")
+    ejes[1].set_title("Tendencia")
+    ejes[2].plot(stl.seasonal.index, stl.seasonal.to_numpy(), color="tab:green")
+    ejes[2].set_title("Estacional")
+    ejes[3].plot(stl.resid.index, stl.resid.to_numpy(), color="tab:red")
+    ejes[3].set_title("Residuo")
+    figura.tight_layout()
+    figura.savefig(FIGURAS / "stl.png", dpi=120)
+    plt.close(figura)
+
+    estacional = stl.seasonal.groupby(stl.seasonal.index.month).mean()
+    mes_alto = estacional.idxmax()
+    mes_bajo = estacional.idxmin()
+    residuo_abs = stl.resid.abs()
+    print(f"STL robusta (periodo {PERIODO}): tendencia "
+          f"{stl.trend.iloc[0]:.1f} -> {stl.trend.iloc[-1]:.1f}")
+    print(f"  mes estacional más alto: {mes_alto} (+{estacional.max():.1f}); "
+          f"más bajo: {mes_bajo} ({estacional.min():.1f})")
+    print(f"  residuo más grande: {residuo_abs.idxmax():%Y-%m} "
+          f"({stl.resid.loc[residuo_abs.idxmax()]:.1f})")
 
 
 # ============================================================
