@@ -108,12 +108,41 @@ def descomponer(serie):
 # ============================================================
 
 def estacionariedad(serie):
-    """TODO: ADF sobre la serie, su diferencia regular, la estacional y las dos.
+    """ADF sobre la serie, su diferencia regular, la estacional y las dos.
 
-    Imprima el valor p de cada versión, elija d y D, y guarde la ACF y la
-    PACF de la serie elegida en figuras/acf_pacf.png. Devuelva (d, D).
+    Imprime el valor p de cada versión, elige d y D, y guarda la ACF y la
+    PACF de la serie elegida en figuras/acf_pacf.png. Devuelve (d, D).
     """
-    raise NotImplementedError("estacionariedad, ACF y PACF")
+    def p_adf(x, regresion, nombre):
+        p = adfuller(x.dropna(), regression=regresion, autolag="AIC")[1]
+        print(f"  ADF {nombre} (regression={regresion}): p = {p:.4f}")
+        return p
+
+    print("Prueba ADF (H0: raíz unitaria, la serie no es estacionaria):")
+    p_adf(serie, "ct", "serie")
+    p_adf(serie.diff(1), "c", "diferencia regular (d=1)")
+    p_adf(serie.diff(PERIODO), "ct", "diferencia estacional (D=1)")
+    p_adf(serie.diff(1).diff(PERIODO), "c", "ambas diferencias (d=1, D=1)")
+
+    # d=1 quita la tendencia; D=1 quita la raíz unitaria estacional.
+    d, D = 1, 1
+    estacionaria = serie
+    if D == 1:
+        estacionaria = estacionaria.diff(PERIODO)
+    if d == 1:
+        estacionaria = estacionaria.diff(1)
+    estacionaria = estacionaria.dropna()
+    print(f"  d = {d}, D = {D}: {len(estacionaria)} meses en la serie estacionaria")
+
+    figura, ejes = plt.subplots(1, 2, figsize=(11, 3.6))
+    plot_acf(estacionaria, lags=24, ax=ejes[0])
+    plot_pacf(estacionaria, lags=24, ax=ejes[1])
+    ejes[0].set_title("ACF de la serie estacionaria")
+    ejes[1].set_title("PACF de la serie estacionaria")
+    figura.tight_layout()
+    figura.savefig(FIGURAS / "acf_pacf.png", dpi=120)
+    plt.close(figura)
+    return d, D
 
 
 # ============================================================
