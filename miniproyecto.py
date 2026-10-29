@@ -1,11 +1,11 @@
-"""Miniproyecto 1: la serie del grupo, de las líneas base al mejor modelo clásico.
+"""Miniproyecto 1: la serie, de las líneas base al mejor modelo clásico.
 
 Se corre de principio a fin con
 
     python miniproyecto.py
 
 y deja las figuras en figuras/ y la tabla en resultados/metricas.csv. Las
-partes marcadas con TODO las completa el grupo; mientras falten, el guion las
+partes marcadas con TODO las completo; mientras falten, el guion las
 reporta como pendientes y sigue. El informe, docs/informe.md, cita las cifras
 y las figuras que produce este guion.
 """
@@ -30,26 +30,29 @@ RESULTADOS.mkdir(exist_ok=True)
 # ============================================================
 # 1. La serie
 # ============================================================
-# Cambie estos cuatro datos por los de la serie del grupo y documente la
+# Cambie estos cuatro datos por los de la serie y documente la
 # fuente en datos/README.md. La serie de ejemplo solo sirve para probar que
 # el guion corre.
-ARCHIVO = "datos/air_passengers.csv"
-FECHA = "Month"
-VALOR = "#Passengers"
+ARCHIVO = "datos/comercio_minorista_colombia.csv"
+FECHA = "observation_date"
+VALOR = "COLSLRTTO01IXOBM"
 PERIODO = 12
 
 # Lo que se hizo con los huecos y con los datos atípicos, en una línea. Va
 # a la columna `decision` de la tabla de métricas.
-DECISION = "TODO: describa aquí la decisión sobre huecos y datos atípicos"
+DECISION = ("Sin huecos (interpolación lineal de respaldo); "
+            "atípicos estacionales de diciembre conservados")
 
 
 def preparar(serie):
-    """TODO: aplique la decisión del grupo sobre huecos y datos atípicos.
+    """Aplica la decisión sobre huecos y datos atípicos.
 
-    Por ejemplo, interpolar los meses vacíos o recortar el tramo afectado.
-    Debe devolver una serie sin NaN.
+    La fuente trae los 135 meses completos, sin vacíos: la interpolación
+    lineal queda solo como respaldo y no toca valores reales. Los máximos de
+    diciembre son el pico estacional real del comercio minorista (índice por
+    encima de 160 en 2021-2023), no errores, así que se conservan.
     """
-    return serie
+    return serie.interpolate(method="linear")
 
 
 def graficar_serie(serie):
